@@ -124,7 +124,7 @@ def reproject_to_wgs84(input_path, output_path, src_crs, dst_crs="EPSG:4326"):
 def resample_to_new_resolution(input_tif, output_tif, target_resolution=125, resampling_method=Resampling.nearest):
     with rasterio.open(input_tif) as src:
         # Define target CRS (WGS84)
-        dst_crs = "EPSG:32632"
+        dst_crs = "ESRI:102039"
 
         # Compute the transform, width, and height for the new resolution
         transform, width, height = calculate_default_transform(
@@ -154,27 +154,7 @@ def resample_to_new_resolution(input_tif, output_tif, target_resolution=125, res
                     src_crs=src.crs,
                     dst_transform=transform,
                     dst_crs=dst_crs,
-                    resampling=Resampling.bilinear  # Change to nearest if categorical data
+                    resampling=resampling_method  # Change to nearest if categorical data
                 )
 
     print(f"Reprojected and resampled image saved: {output_tif}")
-
-
-
-def check_projection(input_tif, target_resolution=125):
-    # Open original dataset
-    with rasterio.open(input_tif) as src:
-        # Print input bounds
-        print(f"Input bounds for {input_tif}: {src.bounds}")
-
-        # Define new CRS
-        dst_crs = "EPSG:4326"  # WGS 84
-
-        # Compute transform
-        transform, width, height = calculate_default_transform(
-            src.crs, dst_crs, src.width, src.height, *src.bounds,
-        )
-
-        # Print output transform and dimensions
-        print(f"Output transform: {transform}")
-        print(f"Output dimensions: width = {width}, height = {height}")
