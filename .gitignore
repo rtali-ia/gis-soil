@@ -1,0 +1,7 @@
+logs/
+plots/
+processed_soil/
+soil_final/
+soil_rasters/
+soilenv/
+src/__pycache__/
